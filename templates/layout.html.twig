@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<header>
+        <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #c8ad7f;">
+                <div class="container-fluid">
+                  <a class="navbar-brand" href="#">E Boutique</a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                      <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}">Home</a>
+
+
+                      </li>
+                      <li class="nav-item">
+                    <a class="nav-link" href="{{ path('produit_all') }}">Produits</a>
+                      </li>
+
+                      {% if not is_granted("IS_AUTHENTICATED_FULLY")  %}
+                      <li class="nav-item">
+                      <a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_register') }}">Inscription</a>
+                      </li>
+                      {% else %}
+                      <li class="nav-item">
+                      <a class="nav-link" href="{{ path('app_logout') }}">Deconnexion</a>
+                      </li>
+                      {% endif %}
+
+                       <li class="nav-item">
+                        <a class="nav-link align right" href="{{path('panier_show')}}">Panier</a>
+                      </li>
+                      {% if is_granted("IS_AUTHENTICATED_FULLY")  and is_granted("ROLE_ADMIN") %}
+                      <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                      data-bs-toggle="dropdown" aria-expanded="false">
+                       Admin
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                      <li><a class="dropdown-item" href="{{ path('admin_ajout_produit') }}">ajout d'un produit  </a></li>
+                      <li>
+	                    <a class="dropdown-item" href="{{path('admin_gestion_produits')}}">gestion Produits</a></li>
+                      </ul>
+                      </li>  
+                      {% endif %}
+
+                      </li>
+                    </ul>
+                  </div>
+                  {% if is_granted("IS_AUTHENTICATED_FULLY")%}
+                  <h6 style="color:white;">Bonjour {{ app.user.nom ~' '~ app.user.prenom }}</h6>
+
+                  {% endif %}
+                </div>
+
+
+
+              </nav>
+        </div>
+    </header>
+<main class="container mb-5 mt-5">
+
+{% for message in app.flashes('error') %}
+
+<div class="alert alert-danger text-center">
+{{message}}
+</div>
+{% endfor %}
+
+{% for message in app.flashes('success') %}
+
+<div class="alert alert-success text-center">
+{{message}}</div>
+{% endfor %}
+
+
+{% block content %}
+
+{% endblock %}
+</main>
+
+<footer class="fixed-bottom bg-light">
+<div class="text-center">
+<p>&copy; Tous droits réservés CKB</p>
+</div>
+</footer>
+{% endblock %}
+
